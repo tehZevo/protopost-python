@@ -30,7 +30,7 @@ class ProtoPost:
 def protopost_client(url, data={}):
     r = requests.post(url, json=data)
     r.raise_for_status()
-    return r
+    return r.json()
 
 if __name__ == "__main__":
     import time
