@@ -24,8 +24,16 @@ class ProtoPost:
                 self.create_routes(v, fullpath)
             else:
                 self.api.add_resource(ProtoPostResource, fullpath, resource_class_args=[v], endpoint=fullpath)
-    def start(self, port=80):
+    def start(self, port=80, logging=False):
+        if not logging:
+            self.disable_logging()
+
         self.app.run(host="0.0.0.0", port=port)
+
+    def disable_logging(self):
+        import logging
+        log = logging.getLogger('werkzeug')
+        log.setLevel(logging.ERROR)
 
 def protopost_client(url, data={}):
     r = requests.post(url, json=data)
