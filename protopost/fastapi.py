@@ -1,21 +1,17 @@
-import re
-
-from flask import Flask, request
-from flask_restful import Resource, Api
+from fastapi import FastAPI, Request
+import uvicorn
 import requests
 
-class ProtoPostResource(Resource):
-    def __init__(self, f):
-        self.f = f
-    def post(self):
-        data = request.get_json()
-        result = self.f(data)
-        return result
+def wrap_protopost(f):
+    async def foo(request: Request):
+        return f(await request.json())
+    return foo
+
 
 class ProtoPost:
     def __init__(self, routes={}):
-        self.app = Flask(__name__)
-        self.api = Api(self.app)
+        self.app = FastAPI()
+        #self.api = Api(self.app)
 
         self.create_routes(routes)
 
@@ -25,32 +21,21 @@ class ProtoPost:
             if type(v) == dict:
                 self.create_routes(v, fullpath)
             else:
-                self.api.add_resource(ProtoPostResource, fullpath, resource_class_args=[v], endpoint=fullpath)
+                #self.api.add_resource(ProtoPostResource, fullpath, resource_class_args=[v], endpoint=fullpath)
+                self.app.post(fullpath)(wrap_protopost(v))
 
     def start(self, port=80, logging=False):
         if not logging:
             self.disable_logging()
 
-        self.app.run(host="0.0.0.0", port=port)
+        uvicorn.run(self.app, host="0.0.0.0", port=port, access_log=False)
 
     def disable_logging(self):
         import logging
         log = logging.getLogger('werkzeug')
         log.setLevel(logging.ERROR)
 
-#turn bare ports into 127.0.0.1:port and add http:// to urls that lack it
-def sanitize_url(url):
-    #if its just numbers then a slash
-    if re.match(r"^\d+\/", url):
-        return "http://127.0.0.1:" + url
-    #if it lacks http
-    if not re.match(r"^https?:\/\/", url):
-        return "http://" + url
-
-    return url
-
 def protopost_client(url, data={}):
-    url = sanitize_url(url)
     r = requests.post(url, json=data)
     r.raise_for_status()
     return r.json()
