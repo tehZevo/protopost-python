@@ -41,7 +41,7 @@ class ProtoPost:
 #turn bare ports into 127.0.0.1:port and add http:// to urls that lack it
 def sanitize_url(url):
     #if its just numbers then a slash
-    if re.match(r"^\d+\/", url):
+    if re.match(r"^\d+\/", url) or re.match(r"^\d+$/", url):
         return "http://127.0.0.1:" + url
     #if it lacks http
     if not re.match(r"^https?:\/\/", url):
