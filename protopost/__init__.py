@@ -27,11 +27,11 @@ class ProtoPost:
             else:
                 self.api.add_resource(ProtoPostResource, fullpath, resource_class_args=[v], endpoint=fullpath)
 
-    def start(self, port=80, logging=False):
+    def start(self, port=80, logging=False, threaded=True):
         if not logging:
             self.disable_logging()
 
-        self.app.run(host="0.0.0.0", port=port)
+        self.app.run(host="0.0.0.0", port=port, threaded=threaded)
 
     def disable_logging(self):
         import logging
