@@ -2,6 +2,7 @@ import re
 
 from flask import Flask, request
 from flask_restful import Resource, Api
+from flask_cors import CORS
 import requests
 
 class ProtoPostResource(Resource):
@@ -15,6 +16,7 @@ class ProtoPostResource(Resource):
 class ProtoPost:
     def __init__(self, routes={}):
         self.app = Flask(__name__)
+        CORS(self.app)
         self.api = Api(self.app)
 
         self.create_routes(routes)
