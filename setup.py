@@ -5,6 +5,7 @@ setup(name='protopost',
   install_requires = [
     "flask==1.1.2",
     "flask_restful",
+    "flask_cors",
     "requests"
   ],
   packages=find_packages())

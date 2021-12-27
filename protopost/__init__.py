@@ -2,6 +2,7 @@ import re
 
 from flask import Flask, request
 from flask_restful import Resource, Api
+from flask_cors import CORS
 import requests
 
 class ProtoPostResource(Resource):
@@ -15,6 +16,7 @@ class ProtoPostResource(Resource):
 class ProtoPost:
     def __init__(self, routes={}):
         self.app = Flask(__name__)
+        CORS(self.app)
         self.api = Api(self.app)
 
         self.create_routes(routes)
@@ -27,11 +29,11 @@ class ProtoPost:
             else:
                 self.api.add_resource(ProtoPostResource, fullpath, resource_class_args=[v], endpoint=fullpath)
 
-    def start(self, port=80, logging=False):
+    def start(self, port=80, logging=False, threaded=True):
         if not logging:
             self.disable_logging()
 
-        self.app.run(host='::', port=port)
+        self.app.run(host="::", port=port, threaded=threaded)
 
     def disable_logging(self):
         import logging
