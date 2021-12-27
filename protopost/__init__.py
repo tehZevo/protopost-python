@@ -51,7 +51,7 @@ def sanitize_url(url):
 
     return url
 
-def protopost_client(url, data={}):
+def protopost_client(url, data=None):
     url = sanitize_url(url)
     r = requests.post(url, json=data)
     r.raise_for_status()
