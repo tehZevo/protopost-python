@@ -31,7 +31,7 @@ class ProtoPost:
         if not logging:
             self.disable_logging()
 
-        self.app.run(host="0.0.0.0", port=port)
+        self.app.run(host='::', port=port)
 
     def disable_logging(self):
         import logging
