@@ -1,4 +1,5 @@
 import re
+import signal
 
 from flask import Flask, request
 from flask_restful import Resource, Api
@@ -30,6 +31,9 @@ class ProtoPost:
                 self.api.add_resource(ProtoPostResource, fullpath, resource_class_args=[v], endpoint=fullpath)
 
     def start(self, port=80, logging=False, host="0.0.0.0", threaded=True):
+        #for docker
+        signal.signal(signal.SIGTERM, lambda: exit(0))
+
         if not logging:
             self.disable_logging()
 
