@@ -1,6 +1,6 @@
 import re
 import signal
-
+import threading
 from flask import Flask, request
 from flask_restful import Resource, Api
 from flask_cors import CORS
@@ -32,7 +32,8 @@ class ProtoPost:
 
     def start(self, port=80, logging=False, host="0.0.0.0", threaded=True):
         #for docker
-        signal.signal(signal.SIGTERM, lambda: exit(0))
+        if threading.current_thread().__class__.__name__ == "_MainThread":
+          signal.signal(signal.SIGTERM, lambda: exit(0))
 
         if not logging:
             self.disable_logging()
