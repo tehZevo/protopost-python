@@ -27,6 +27,7 @@ from protopost import protopost_client as ppcl
 
 ppcl("http://127.0.0.1/foobar/foo") #hello foo
 ```
+NOTE: this will create a requests Session object in hopes of faster requests
 
 ## TODO
 * exception handling (status 400/500)
