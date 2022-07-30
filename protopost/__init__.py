@@ -56,9 +56,13 @@ def sanitize_url(url):
 
     return url
 
+session = None
+
 def protopost_client(url, data=None):
+    if session is None:
+      session = requests.Session()
     url = sanitize_url(url)
-    r = requests.post(url, json=data)
+    r = session.post(url, json=data)
     r.raise_for_status()
     return r.json()
 
