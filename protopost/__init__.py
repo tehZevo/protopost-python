@@ -59,6 +59,7 @@ def sanitize_url(url):
 session = None
 
 def protopost_client(url, data=None):
+    global session
     if session is None:
       session = requests.Session()
     url = sanitize_url(url)
