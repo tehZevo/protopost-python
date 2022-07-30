@@ -9,9 +9,9 @@ import requests
 class ProtoPostResource(Resource):
     def __init__(self, f):
         self.f = f
-    def post(self):
+    def post(self, *args, **kwargs):
         data = request.get_json()
-        result = self.f(data)
+        result = self.f(data, *args, **kwargs)
         return result
 
 class ProtoPost:

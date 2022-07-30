@@ -21,6 +21,14 @@ routes = {
 ProtoPost(routes).start(8000)
 ```
 
+*NOTE: also supports parameterization of routes, so the following should allow you to capture the full route:*
+```
+routes = {
+  "<path:foo>": lambda data, foo: print(foo)
+}
+```
+With this, `POST`ing to /hello/world will print `hello/world`.
+
 ### Client
 ```python
 from protopost import protopost_client as ppcl
