@@ -1,4 +1,5 @@
 import re
+import json
 import signal
 import threading
 from flask import Flask, request
@@ -42,7 +43,7 @@ class ProtoPost:
 
     def disable_logging(self):
         import logging
-        log = logging.getLogger('werkzeug')
+        log = logging.getLogger("werkzeug")
         log.setLevel(logging.ERROR)
 
 #turn bare ports into 127.0.0.1:port and add http:// to urls that lack it
@@ -63,7 +64,7 @@ def protopost_client(url, data=None):
     if session is None:
       session = requests.Session()
     url = sanitize_url(url)
-    r = session.post(url, json=data)
+    r = session.post(url, data=json.dumps(data), headers={"Content-type": "application/json"})
     r.raise_for_status()
     return r.json()
 

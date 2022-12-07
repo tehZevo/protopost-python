@@ -11,16 +11,13 @@ routes = {
 PORT = 8121
 N = 1000
 
-# ProtoPost(routes).start(PORT)
 threading.Thread(target=lambda: ProtoPost(routes).start(PORT), daemon=True).start()
 
 session = requests.Session()
 time.sleep(2)
 start_time = time.time()
 for i in range(N):
-    # r = session.post("http://127.0.0.1:{}/echo".format(PORT), json={"hello": "world"})
     ppcl("{}/echo".format(PORT), {"hello": "world"})
-    #print(i, r.text)
 
 dt = time.time() - start_time
 print("took", dt, "seconds")
