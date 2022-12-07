@@ -11,7 +11,8 @@ class ProtoPostResource(Resource):
     def __init__(self, f):
         self.f = f
     def post(self, *args, **kwargs):
-        data = request.get_json()
+        #in the case of empty body, just use None for the data passed to this request
+        data = request.get_json(force=True) if request.get_data() else None
         result = self.f(data, *args, **kwargs)
         return result
 
